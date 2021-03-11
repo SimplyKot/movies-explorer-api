@@ -4,8 +4,11 @@
   "description": "Diploma project webdev YandexPraktikum",
   "main": "app.js",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "eslint-config-airbnb": "^18.2.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.19",
     "nodemon": "^2.0.7"
   },
   "devDependencies": {
