@@ -7,6 +7,10 @@ const User = require("../models/user");
 const ExistError = require("../errors/exist-err");
 // const NotFoundError = require("../errors/not-found-err");
 
+module.exports.testUser = (req, res) => {
+  res.send({ message: "Test completed!" });
+};
+
 module.exports.createUser = (req, res, next) => {
   const { email, name, about, avatar } = req.body;
   User.findOne({ email })
