@@ -1,11 +1,14 @@
 // Подключаем файл окружения .env
 require("dotenv").config();
 
+// Подключаем сервер
 const express = require("express");
+// Подключаем модуль связи с БД
 const mongoose = require("mongoose");
-// const bodyParser = require("body-parser");
+// Подклбчаем защиту CORS
 const cors = require("cors");
 
+// Подключаемся к mongoDB
 mongoose.connect("mongodb://localhost:27017/kotomovies", {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -19,7 +22,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Вклчаем CORS
+// Включаем CORS
 app.use(cors());
 
 app.listen(PORT);
