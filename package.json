@@ -4,19 +4,21 @@
   "description": "Diploma project webdev YandexPraktikum",
   "main": "app.js",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "eslint-config-airbnb": "^18.2.1",
     "express": "^4.17.1",
     "mongoose": "^5.11.19",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "validator": "^13.5.2"
   },
   "devDependencies": {
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.1",
-    "prettier": "2.2.1"
+    "prettier": "^2.2.1"
   },
   "scripts": {
     "dev": "nodemon app.js",
