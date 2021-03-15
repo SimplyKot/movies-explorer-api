@@ -60,6 +60,35 @@ app.use(auth);
 app.use("/users", users);
 app.use("/movies", movies);
 
+// TODO: Настроить централизованный обрабочик ошибок
+// TODO: Настроить централизованный express rate limiter
+// TODO: Настроить централизованный hemlet?
+
+app.use((err, req, res, next) => {
+
+  if (isCelebrateError(err)) {
+    let message = "";
+    const errorParam = err.details.get('params'); // 'params' is a Map()
+    const errorBody = err.details.get('body'); // 'details' is a Map()
+
+    if (errorParam) {
+      const { details: [errorDetailsParams] } = errorParam;
+      message = errorDetailsParams.message;
+    }
+    if (errorBody) {
+      const { details: [errorDetailsParams] } = errorBody;
+      message = errorDetailsParams.message;
+    }
+
+    return res.status(400).send({ "message": message }
+    )
+
+  }
+  else {
+    res.status(err.statusCode || 500).send({ message: err.message || "Ошибка сервера" })
+  }
+})
+
 app.listen(PORT);
 // eslint-disable-next-line no-console
 console.log(`App started on port ${PORT}`);
