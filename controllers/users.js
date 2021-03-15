@@ -31,17 +31,19 @@ module.exports.createUser = (req, res, next) => {
 };
 
 module.exports.updateUser = (req, res, next) => {
-  const { name, about } = req.body;
-  User.findByIdAndUpdate(
-    req.user._id,
-    { name, about },
-    {
-      new: true,
-      runValidators: true,
-    }
-  )
-    .then((user) => res.send(user))
-    .catch((err) => next(err));
+  //onst { name, password } = req.body;
+  bcrypt.hash(req.body.password, 10).then((hash) =>
+    User.findByIdAndUpdate(
+      req.user._id,
+      { email: req.body.email, password: hash },
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
+      .then((user) => res.send(user))
+      .catch((err) => next(err))
+  );
 };
 
 module.exports.login = (req, res, next) => {
