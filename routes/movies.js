@@ -1,4 +1,4 @@
-const users = require("express").Router();
+const movies = require("express").Router();
 const { celebrate, Joi } = require("celebrate");
 
 const {
@@ -9,13 +9,16 @@ const {
 } = require("../controllers/users");
 
 // Тестовый роут
-users.get("/test", testMovie);
+movies.get("/test", testMovie);
 
-// ПОлучаем пользователя
-users.get("/", getMovies);
+// Получаем все фильмы пользователя
+movies.get("/", getMovies);
 
-// Обновляем профиль пользователя
-users.delete(
+// Добавляем фильм в избранное
+movies.post("/", addMovie);
+
+// Удаляем фильм из избранного
+movies.delete(
   "/:movieId",
   celebrate({
     body: Joi.object().keys({
@@ -25,4 +28,4 @@ users.delete(
   deleteMovie
 );
 
-module.exports = users;
+module.exports = movies;
