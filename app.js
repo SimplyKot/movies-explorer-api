@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 // Подключаемся к mongoDB
-mongoose.connect("mongodb://localhost:27017/kotomovies", {
+mongoose.connect("mongodb://localhost:27017/kotomoviesdb", {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
