@@ -3,7 +3,7 @@ const DenyError = require("../errors/deny-err");
 const NotFoundError = require("../errors/not-found-err");
 
 module.exports.testMovie = (req, res, next) => {
-  return res.send("TestMovie!");
+  res.send("TestMovie!");
 };
 
 module.exports.getMovies = (req, res, next) => {

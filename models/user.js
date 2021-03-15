@@ -24,12 +24,6 @@ const userSchema = new mongoose.Schema({
     minlength: [8, "Мнимальная длина поля 'password' - 8 символов"],
     select: false,
   },
-  name: {
-    type: String,
-    required: true,
-    minlength: [2, "Минимальная длинна поля 'name' - 2 символа"],
-    maxlength: [30, "Максимальная длинна поля 'name' - 30 символов"],
-  },
 });
 
 // eslint-disable-next-line func-names

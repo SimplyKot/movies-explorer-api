@@ -1,3 +1,4 @@
+const { ObjectID } = require("bson");
 const mongoose = require("mongoose");
 
 const movieSchema = new mongoose.Schema({
@@ -59,6 +60,16 @@ const movieSchema = new mongoose.Schema({
       message: "Ссылка на миниатюру некорректна",
     },
   },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+    required: [true, "Поле 'owner' должно быть заполнено"],
+  },
+  movieId: {
+    type: Number,
+    required: [true, "Поле 'movieId' должно быть заполнено"],
+  }
+
 });
 
 module.exports = mongoose.model("movie", movieSchema);

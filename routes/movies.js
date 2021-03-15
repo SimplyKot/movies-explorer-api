@@ -1,12 +1,12 @@
 const movies = require("express").Router();
-const { celebrate, Joi } = require("celebrate");
+const { celebrate, Joi, Segments } = require("celebrate");
 
 const {
   getMovies,
   addMovie,
   deleteMovie,
   testMovie,
-} = require("../controllers/users");
+} = require("../controllers/movies");
 
 // Тестовый роут
 movies.get("/test", testMovie);
@@ -15,16 +15,19 @@ movies.get("/test", testMovie);
 movies.get("/", getMovies);
 
 // Добавляем фильм в избранное
-movies.post("/", addMovie);
+movies.post("/",
+  // celebrate({}),
+  addMovie);
 
 // Удаляем фильм из избранного
 movies.delete(
   "/:movieId",
   celebrate({
-    body: Joi.object().keys({
-      name: Joi.string().required().length(24).hex(),
-    }),
+    [Segments.PARAMS]: {
+      cardId: Joi.number().required().positive()
+    }
   }),
+  //Joi.number().required().positive(),
   deleteMovie
 );
 
