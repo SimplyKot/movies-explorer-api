@@ -20,6 +20,7 @@ const { celebrate, Joi } = require("celebrate");
 const users = require("./routes/users");
 const movies = require("./routes/movies");
 const { login, createUser } = require("./controllers/users");
+const auth = require("./middlewares/auth")
 
 
 
@@ -54,6 +55,7 @@ app.post(
   createUser
 );
 
+app.use(auth);
 
 app.use("/users", users);
 app.use("/movies", movies);
