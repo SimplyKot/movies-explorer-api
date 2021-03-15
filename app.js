@@ -16,6 +16,8 @@ mongoose.connect("mongodb://localhost:27017/kotomoviesdb", {
   useUnifiedTopology: true,
 });
 
+const users = require("./routes/users");
+
 const { PORT = 3000 } = process.env;
 const app = express();
 
@@ -24,6 +26,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Включаем CORS
 app.use(cors());
+
+app.use("/users", users);
 
 app.listen(PORT);
 // eslint-disable-next-line no-console
