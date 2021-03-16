@@ -3,6 +3,8 @@ require("dotenv").config();
 
 // Подключаем сервер
 const express = require("express");
+// Подклюяаем логирование
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 // Подключаем модуль связи с БД
 const mongoose = require("mongoose");
 // Подклбчаем защиту CORS
@@ -29,6 +31,9 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Логируем запросы
+app.use(requestLogger);
 
 // Включаем CORS
 app.use(cors());
@@ -60,7 +65,14 @@ app.use(auth);
 app.use("/users", users);
 app.use("/movies", movies);
 
-// TODO: Настроить централизованный обрабочик ошибок
+app.use("*", (req, res) => {
+  res.status(404).send({ message: "Запрашиваемый ресурс не найден" });
+});
+
+// Логируем ошибки
+app.use(errorLogger);
+
+// TODO: Настроить централизованный обработчик ошибок
 // TODO: Настроить централизованный express rate limiter
 // TODO: Настроить централизованный hemlet?
 
