@@ -1,34 +1,34 @@
-const movies = require("express").Router();
-const { celebrate, Joi, Segments } = require("celebrate");
+const movies = require('express').Router();
+const { celebrate, Joi, Segments } = require('celebrate');
 
 const {
   getMovies,
   addMovie,
   deleteMovie,
   testMovie,
-} = require("../controllers/movies");
+} = require('../controllers/movies');
 
 // Тестовый роут
-movies.get("/test", testMovie);
+movies.get('/test', testMovie);
 
 // Получаем все фильмы пользователя
-movies.get("/", getMovies);
+movies.get('/', getMovies);
 
 // Добавляем фильм в избранное
-movies.post("/",
+movies.post('/',
   // celebrate({}),
   addMovie);
 
 // Удаляем фильм из избранного
 movies.delete(
-  "/:movieId",
+  '/:movieId',
   celebrate({
     [Segments.PARAMS]: {
-      movieId: Joi.string().required().length(24).hex()
-    }
+      movieId: Joi.string().required().length(24).hex(),
+    },
   }),
-  //Joi.number().required().positive(),
-  deleteMovie
+  // Joi.number().required().positive(),
+  deleteMovie,
 );
 
 module.exports = movies;

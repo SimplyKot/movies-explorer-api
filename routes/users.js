@@ -1,28 +1,29 @@
-const users = require("express").Router();
-const { celebrate, Joi } = require("celebrate");
+const users = require('express').Router();
+const { celebrate, Joi } = require('celebrate');
 
 const {
   getCurrentUser,
   updateUser,
   testUser,
-} = require("../controllers/users");
+} = require('../controllers/users');
 
 // Тестовый роут
-users.get("/", testUser);
+users.get('/', testUser);
 
 // ПОлучаем пользователя
-users.get("/me", getCurrentUser);
+users.get('/me', getCurrentUser);
 
 // Обновляем профиль пользователя
 users.patch(
-  "/me",
+  '/me',
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().required().email(),
-      password: Joi.string().required().min(2).max(8).alphanum(),
+      password: Joi.string().required().min(2).max(8)
+        .alphanum(),
     }),
   }),
-  updateUser
+  updateUser,
 );
 
 module.exports = users;

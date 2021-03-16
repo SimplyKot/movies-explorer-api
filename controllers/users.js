@@ -1,49 +1,49 @@
 /* eslint-disable no-throw-literal */
 const { NODE_ENV, JWT_SECRET } = process.env;
 
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const User = require("../models/user");
-const ExistError = require("../errors/exist-err");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const User = require('../models/user');
+const ExistError = require('../errors/exist-err');
 // const NotFoundError = require("../errors/not-found-err");
 
 module.exports.testUser = (req, res) => {
-  res.send({ message: "Test completed!" });
+  res.send({ message: 'Test completed!' });
 };
 
 module.exports.createUser = (req, res, next) => {
-  const { email, name, about, avatar } = req.body;
+  const {
+    email, name, about, avatar,
+  } = req.body;
   User.findOne({ email })
     .then((data) => {
       if (data) {
-        throw new ExistError("Пользователь с такой почтой существует");
+        throw new ExistError('Пользователь с такой почтой существует');
       }
     })
     .catch((err) => next(err));
 
-  bcrypt.hash(req.body.password, 10).then((hash) =>
-    User.create({ email, password: hash, name, about, avatar })
-      .then((user) => res.send({ data: { _id: user._id, email: user.email } }))
-      .catch((err) => {
-        next(err);
-      })
-  );
+  bcrypt.hash(req.body.password, 10).then((hash) => User.create({
+    email, password: hash, name, about, avatar,
+  })
+    .then((user) => res.send({ data: { _id: user._id, email: user.email } }))
+    .catch((err) => {
+      next(err);
+    }));
 };
 
 module.exports.updateUser = (req, res, next) => {
-  //onst { name, password } = req.body;
-  bcrypt.hash(req.body.password, 10).then((hash) =>
-    User.findByIdAndUpdate(
-      req.user._id,
-      { email: req.body.email, password: hash },
-      {
-        new: true,
-        runValidators: true,
-      }
-    )
-      .then((user) => res.send(user))
-      .catch((err) => next(err))
-  );
+  // onst { name, password } = req.body;
+  bcrypt.hash(req.body.password, 10).then((hash) => User.findByIdAndUpdate(
+    req.user._id,
+    { email: req.body.email, password: hash },
+    {
+      new: true,
+      runValidators: true,
+    },
+  )
+    .then((user) => res.send(user))
+    .catch((err) => next(err)));
 };
 
 module.exports.login = (req, res, next) => {
@@ -54,10 +54,10 @@ module.exports.login = (req, res, next) => {
       // создадим токен
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === "production" ? JWT_SECRET : "some-secret-key",
+        NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key',
         {
-          expiresIn: "7d",
-        }
+          expiresIn: '7d',
+        },
       );
       // вернём токен
       res.send({ token });

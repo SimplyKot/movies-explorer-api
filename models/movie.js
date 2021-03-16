@@ -1,5 +1,4 @@
-const { ObjectID } = require("bson");
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -27,7 +26,7 @@ const movieSchema = new mongoose.Schema({
         const regex = /^((http|https):\/\/)?(www\.)?[a-zA-Z0-9-]{1,}\.?([a-z0-9]{1,})?\.([a-z0-9]{1,})?\.?\w{1,}?(\/([\w#!:.?+=&%@!\-/])*)?/i;
         return regex.test(v);
       },
-      message: "Ссылка на картинку некорректна",
+      message: 'Ссылка на картинку некорректна',
     },
   },
   trailer: {
@@ -38,7 +37,7 @@ const movieSchema = new mongoose.Schema({
         const regex = /^((http|https):\/\/)?(www\.)?[a-zA-Z0-9-]{1,}\.?([a-z0-9]{1,})?\.([a-z0-9]{1,})?\.?\w{1,}?(\/([\w#!:.?+=&%@!\-/])*)?/i;
         return regex.test(v);
       },
-      message: "Ссылка на трейлер некорректна",
+      message: 'Ссылка на трейлер некорректна',
     },
   },
   nameRU: {
@@ -57,14 +56,14 @@ const movieSchema = new mongoose.Schema({
         const regex = /^((http|https):\/\/)?(www\.)?[a-zA-Z0-9-]{1,}\.?([a-z0-9]{1,})?\.([a-z0-9]{1,})?\.?\w{1,}?(\/([\w#!:.?+=&%@!\-/])*)?/i;
         return regex.test(v);
       },
-      message: "Ссылка на миниатюру некорректна",
+      message: 'Ссылка на миниатюру некорректна',
     },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+    ref: 'user',
     required: [true, "Поле 'owner' должно быть заполнено"],
   },
 });
 
-module.exports = mongoose.model("movie", movieSchema);
+module.exports = mongoose.model('movie', movieSchema);
