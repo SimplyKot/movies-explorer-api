@@ -42,7 +42,7 @@ mongoose.connect(mongoConnectString, {
   useUnifiedTopology: true,
 });
 
-const { celebrate, Joi, isCelebrateError } = require('celebrate');
+const { celebrate, Joi } = require('celebrate');
 
 // Подклюяаем логирование
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -51,6 +51,7 @@ const users = require('./routes/users');
 const movies = require('./routes/movies');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
+const errorHandler = require('./middlewares/errorHandler');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -103,26 +104,7 @@ app.use('*', (req, res) => {
 // Логируем ошибки
 app.use(errorLogger);
 
-// eslint-disable-next-line no-unused-vars
-app.use((err, req, res, next) => {
-  if (isCelebrateError(err)) {
-    let message = '';
-    const errorParam = err.details.get('params');
-    const errorBody = err.details.get('body');
-
-    if (errorParam) {
-      const { details: [errorDetailsParams] } = errorParam;
-      message = errorDetailsParams.message;
-    }
-    if (errorBody) {
-      const { details: [errorDetailsParams] } = errorBody;
-      message = errorDetailsParams.message;
-    }
-
-    return res.status(400).send({ message });
-  }
-
-  return res.status(err.statusCode || 500).send({ message: err.message || 'Ошибка сервера' });
-});
+app.use(errorHandler);
 
 app.listen(PORT);
+console.log(PORT);
