@@ -6,8 +6,26 @@ const express = require('express');
 
 // Подключаем модуль связи с БД
 const mongoose = require('mongoose');
+
 // Подклбчаем защиту CORS
 const cors = require('cors');
+
+// Пдключаем защиту от брутфорса
+const rateLimit = require('express-rate-limit');
+
+// Настраиваем защиту создания пользователя и аутентификации
+const authLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // За 5 минут
+  max: 10, // 10 подключений
+  message: { message: 'Превышено количество попыток подключения с этого IP, повторите попытку через 5 минут' },
+});
+
+// Настраиваем защиту создания пользователя и аутентификации
+const actionLimiter = rateLimit({
+  windowMs: 1000, // За 1 секунду
+  max: 3, // 1 действие
+  message: { message: 'Первышена частота запросов. Максимально возможно сделать три запроса в секунду.' },
+});
 
 // Подключаемся к mongoDB
 mongoose.connect('mongodb://localhost:27017/kotomoviesdb', {
@@ -48,6 +66,7 @@ app.post(
         .alphanum(),
     }),
   }),
+  authLimiter,
   login,
 );
 app.post(
@@ -59,11 +78,13 @@ app.post(
         .alphanum(),
     }),
   }),
+  authLimiter,
   createUser,
 );
 
 app.use(auth);
 
+app.use(actionLimiter);
 app.use('/users', users);
 app.use('/movies', movies);
 
@@ -74,7 +95,6 @@ app.use('*', (req, res) => {
 // Логируем ошибки
 app.use(errorLogger);
 
-// TODO: Настроить централизованный обработчик ошибок
 // TODO: Настроить централизованный express rate limiter
 // TODO: Настроить централизованный hemlet?
 
