@@ -13,25 +13,13 @@ const cors = require('cors');
 // Подключаем защиту заголовков hemlet
 const helmet = require('helmet');
 
-// Пдключаем защиту от брутфорса
-const rateLimit = require('express-rate-limit');
+// Импортирует celebrate
+const { celebrate, Joi } = require('celebrate');
 
-// Настраиваем защиту создания пользователя и аутентификации
-const authLimiter = rateLimit({
-  windowMs: 5 * 60 * 1000, // За 5 минут
-  max: 10, // 10 подключений
-  message: { message: 'Превышено количество попыток подключения с этого IP, повторите попытку через 5 минут' },
-});
-
-// Настраиваем защиту создания пользователя и аутентификации
-const actionLimiter = rateLimit({
-  windowMs: 1000, // За 1 секунду
-  max: 3, // 1 действие
-  message: { message: 'Первышена частота запросов. Максимально возможно сделать три запроса в секунду.' },
-});
+// Импортируем лимитер для авторизации
+const { authLimiter, actionLimiter } = require('./middlewares/rateLimiter');
 
 // Подключаемся к mongoDB
-
 const isProductionHost = process.env.NODE_env === 'production';
 const { DB_HOST, DB_PORT, DB_NAME } = process.env;
 const mongoConnectString = `mongodb://${isProductionHost ? DB_HOST : 'localhost'}:${isProductionHost ? DB_PORT : 27017}/${isProductionHost ? DB_NAME : 'kotomoviesdb'}`;
@@ -41,8 +29,6 @@ mongoose.connect(mongoConnectString, {
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
-
-const { celebrate, Joi } = require('celebrate');
 
 // Подклюяаем логирование
 const { requestLogger, errorLogger } = require('./middlewares/logger');
