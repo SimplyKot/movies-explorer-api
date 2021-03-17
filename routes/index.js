@@ -10,6 +10,9 @@ const { login, createUser } = require('../controllers/users');
 const users = require('./users');
 const movies = require('./movies');
 
+// Импортируем файл с авторизацией
+const auth = require('../middlewares/auth');
+
 router.post(
   '/signin',
   celebrate({
@@ -34,6 +37,9 @@ router.post(
   authLimiter,
   createUser,
 );
+
+// Проверка авторизации
+router.use(auth);
 
 // Огрганичиваем частоту действий авторизированных пользователе
 router.use(actionLimiter);

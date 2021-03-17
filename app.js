@@ -30,14 +30,12 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 // Импортируем файл с маршрутами
 const routes = require('./routes/index');
 
-// Импортируем файл с авторизацией
-const auth = require('./middlewares/auth');
-
 // Импортируем файл с описанием ошибок
 const errorHandler = require('./middlewares/errorHandler');
 
 const { PORT = 3000 } = process.env;
 const app = express();
+
 app.use(helmet());
 
 app.use(express.json());
@@ -48,9 +46,6 @@ app.use(requestLogger);
 
 // Включаем CORS
 app.use(cors());
-
-// Проверка авторизации
-app.use(auth);
 
 // Подключаем все маршруты
 app.use(routes);
