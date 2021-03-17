@@ -107,8 +107,8 @@ app.use(errorLogger);
 app.use((err, req, res, next) => {
   if (isCelebrateError(err)) {
     let message = '';
-    const errorParam = err.details.get('params'); // 'params' is a Map()
-    const errorBody = err.details.get('body'); // 'details' is a Map()
+    const errorParam = err.details.get('params');
+    const errorBody = err.details.get('body');
 
     if (errorParam) {
       const { details: [errorDetailsParams] } = errorParam;
