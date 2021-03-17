@@ -4,11 +4,7 @@ const { celebrate, Joi } = require('celebrate');
 const {
   getCurrentUser,
   updateUser,
-  testUser,
 } = require('../controllers/users');
-
-// Тестовый роут
-users.get('/', testUser);
 
 // ПОлучаем пользователя
 users.get('/me', getCurrentUser);

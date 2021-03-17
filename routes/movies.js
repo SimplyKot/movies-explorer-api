@@ -5,11 +5,7 @@ const {
   getMovies,
   addMovie,
   deleteMovie,
-  testMovie,
 } = require('../controllers/movies');
-
-// Тестовый роут
-movies.get('/test', testMovie);
 
 // Получаем все фильмы пользователя
 movies.get('/', getMovies);
