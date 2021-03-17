@@ -13,12 +13,6 @@ const cors = require('cors');
 // Подключаем защиту заголовков hemlet
 const helmet = require('helmet');
 
-// Импортирует celebrate
-const { celebrate, Joi } = require('celebrate');
-
-// Импортируем лимитер для авторизации
-const { authLimiter, actionLimiter } = require('./middlewares/rateLimiter');
-
 // Подключаемся к mongoDB
 const isProductionHost = process.env.NODE_env === 'production';
 const { DB_HOST, DB_PORT, DB_NAME } = process.env;
@@ -33,9 +27,13 @@ mongoose.connect(mongoConnectString, {
 // Подклюяаем логирование
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
+// Импортируем файл с маршрутами
 const routes = require('./routes/index');
-const { login, createUser } = require('./controllers/users');
+
+// Импортируем файл с авторизацией
 const auth = require('./middlewares/auth');
+
+// Импортируем файл с описанием ошибок
 const errorHandler = require('./middlewares/errorHandler');
 
 const { PORT = 3000 } = process.env;
@@ -51,36 +49,10 @@ app.use(requestLogger);
 // Включаем CORS
 app.use(cors());
 
-app.post(
-  '/signin',
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().required().email(),
-      password: Joi.string().required().min(2).max(8)
-        .alphanum(),
-    }),
-  }),
-  authLimiter,
-  login,
-);
-app.post(
-  '/signup',
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().required().email(),
-      password: Joi.string().required().min(2).max(8)
-        .alphanum(),
-    }),
-  }),
-  authLimiter,
-  createUser,
-);
-
-// Проверка выторизации
+// Проверка авторизации
 app.use(auth);
 
-// Огрганичиваем частоту действий авторизированных пользователе
-app.use(actionLimiter);
+// Подключаем все маршруты
 app.use(routes);
 
 // Логируем ошибки
