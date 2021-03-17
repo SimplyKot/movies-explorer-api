@@ -14,7 +14,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 
 // Подключаемся к mongoDB
-const isProductionHost = process.env.NODE_env === 'production';
+const isProductionHost = process.env.NODE_ENV === 'production';
 const { DB_HOST, DB_PORT, DB_NAME } = process.env;
 const mongoConnectString = `mongodb://${isProductionHost ? DB_HOST : 'localhost'}:${isProductionHost ? DB_PORT : 27017}/${isProductionHost ? DB_NAME : 'kotomoviesdb'}`;
 mongoose.connect(mongoConnectString, {
