@@ -31,7 +31,11 @@ const actionLimiter = rateLimit({
 });
 
 // Подключаемся к mongoDB
-mongoose.connect('mongodb://localhost:27017/kotomoviesdb', {
+
+const isProductionHost = process.env.NODE_env === 'production';
+const { DB_HOST, DB_PORT, DB_NAME } = process.env;
+const mongoConnectString = `mongodb://${isProductionHost ? DB_HOST : 'localhost'}:${isProductionHost ? DB_PORT : 27017}/${isProductionHost ? DB_NAME : 'kotomoviesdb'}`;
+mongoose.connect(mongoConnectString, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -122,5 +126,3 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT);
-// eslint-disable-next-line no-console
-console.log(`App started on port ${PORT}`);
