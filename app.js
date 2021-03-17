@@ -78,8 +78,8 @@ app.use(errorLogger);
 // TODO: Настроить централизованный express rate limiter
 // TODO: Настроить централизованный hemlet?
 
-// eslint-disable-next-line consistent-return
-app.use((err, req, res) => {
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
   if (isCelebrateError(err)) {
     let message = '';
     const errorParam = err.details.get('params'); // 'params' is a Map()
@@ -97,7 +97,7 @@ app.use((err, req, res) => {
     return res.status(400).send({ message });
   }
 
-  res.status(err.statusCode || 500).send({ message: err.message || 'Ошибка сервера' });
+  return res.status(err.statusCode || 500).send({ message: err.message || 'Ошибка сервера' });
 });
 
 app.listen(PORT);

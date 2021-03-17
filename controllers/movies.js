@@ -4,7 +4,6 @@ const NotFoundError = require('../errors/not-found-err');
 
 module.exports.getMovies = (req, res, next) => {
   Movie.find({})
-    .orFail(new Error('Невозможно получить фильмы'))
     .then((data) => res.send(data))
     .catch((err) => next(err));
 };
@@ -36,11 +35,12 @@ module.exports.deleteMovie = (req, res, next) => {
   Movie.findById(movieId)
     .orFail(new NotFoundError('Фильм не существует'))
     .then((data) => {
-      if (data.owner !== req.user._id) {
+      // eslint-disable-next-line eqeqeq
+      if (data.owner != req.user._id) {
         throw new DenyError('Невозможно удалить чужой фильм');
       } else {
         Movie.findByIdAndDelete(movieId)
-          .then((movie) => res.send(`Фильм с "id" ${movie._id} удален`))
+          .then((movie) => res.send({ message: `Фильм с "id" ${movie._id} удален` }))
           .catch((err) => next(err));
       }
     })
