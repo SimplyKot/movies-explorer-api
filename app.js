@@ -47,8 +47,7 @@ const { celebrate, Joi } = require('celebrate');
 // Подклюяаем логирование
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const users = require('./routes/users');
-const movies = require('./routes/movies');
+const routes = require('./routes/index');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errorHandler');
@@ -91,19 +90,17 @@ app.post(
   createUser,
 );
 
+// Проверка выторизации
 app.use(auth);
 
+// Огрганичиваем частоту действий авторизированных пользователе
 app.use(actionLimiter);
-app.use('/users', users);
-app.use('/movies', movies);
-
-app.use('*', (req, res) => {
-  res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
-});
+app.use(routes);
 
 // Логируем ошибки
 app.use(errorLogger);
 
+// Подключаем централизованный обработчик ошибок
 app.use(errorHandler);
 
 app.listen(PORT);
