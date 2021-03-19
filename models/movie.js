@@ -64,6 +64,10 @@ const movieSchema = new mongoose.Schema({
     ref: 'user',
     required: [true, "Поле 'owner' должно быть заполнено"],
   },
+  movieId: {
+    type: Number,
+    required: [true, "Поле 'movieId' должно быть заполнено"],
+  },
 });
 
 module.exports = mongoose.model('movie', movieSchema);
