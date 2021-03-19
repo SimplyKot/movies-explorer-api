@@ -7,6 +7,12 @@ const bcrypt = require('bcryptjs');
 const AuthError = require('../errors/auth-err');
 
 const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "Поле 'name' должно быть заполнено"],
+    minlength: [2, "Минимальная длина поля 'name' - 8 символов"],
+    maxlength: [30, "Макмальная длина поля 'name' - 30 символов"],
+  },
   email: {
     type: String,
     required: [true, "Поле 'email' должно быть заполнено"],
@@ -21,7 +27,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Поле 'password' должно быть заполнено"],
-    minlength: [8, "Мнимальная длина поля 'password' - 8 символов"],
+    minlength: [8, "Минимальная длина поля 'password' - 8 символов"],
     select: false,
   },
 });

@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const ExistError = require('../errors/exist-err');
-// const NotFoundError = require("../errors/not-found-err");
+const ConflictError = require('../errors/conflict-err');
 
 module.exports.testUser = (req, res) => {
   res.send({ message: 'Test completed!' });
@@ -32,17 +32,21 @@ module.exports.createUser = (req, res, next) => {
 };
 
 module.exports.updateUser = (req, res, next) => {
-  // onst { name, password } = req.body;
-  bcrypt.hash(req.body.password, 10).then((hash) => User.findByIdAndUpdate(
-    req.user._id,
-    { email: req.body.email, password: hash },
-    {
-      new: true,
-      runValidators: true,
-    },
-  )
+  const { name, email } = req.body;
+  User.findOne({ email })
+    .then((data) => {
+      if (data) { throw new ConflictError(`Пользователь с почтой ${email} уже существует`); }
+    })
+    .then(() => User.findByIdAndUpdate(
+      req.user._id,
+      { name, email },
+      {
+        new: true,
+        runValidators: true,
+      },
+    ))
     .then((user) => res.send(user))
-    .catch((err) => next(err)));
+    .catch((err) => next(err));
 };
 
 module.exports.login = (req, res, next) => {

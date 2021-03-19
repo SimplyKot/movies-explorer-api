@@ -17,7 +17,5 @@ module.exports = (err, req, res, next) => {
 
     res.status(400).send({ message });
     next(err);
-  }
-
-  return res.status(err.statusCode || 500).send({ message: err.message || 'Ошибка сервера' });
+  } else { res.status(err.statusCode || 500).send({ message: err.message || 'Ошибка сервера' }); }
 };
