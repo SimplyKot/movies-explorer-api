@@ -33,7 +33,7 @@ module.exports.addMovie = (req, res, next) => {
     movieId,
   };
 
-  Movie.findOne({ movieId })
+  Movie.findOne({ movieId, owner: data.owner })
     .then((movie) => {
       if (movie) {
         throw new ConflictError(FILM_ERROR.FILM_ALREADY_EXIST);
@@ -52,8 +52,8 @@ module.exports.deleteMovie = (req, res, next) => {
     .orFail(new NotFoundError(FILM_ERROR.FILM_NOT_FOUND))
     .then((data) => {
       if (data.owner._id.toString() === req.user._id) {
-        Movie.findByIdAndDelete(movieId)
-          .then((movie) => res.send({ message: `Фильм с "id" ${movie._id} удален` }))
+        Movie.remove(data)
+          .then(() => res.send({ message: FILM_ERROR.FILM_DELETED }))
           .catch((err) => next(err));
       } else {
         throw new DenyError(FILM_ERROR.NOT_OWNER);

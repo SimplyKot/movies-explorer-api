@@ -22,6 +22,7 @@ const FILM_ERROR = {
   FILM_NOT_FOUND: 'Фильм не существует',
   NOT_OWNER: 'Невозможно удалить чужой фильм',
   FILM_ALREADY_EXIST: 'Этот фильм уже был добавлен вами в ибранные ранее',
+  FILM_DELETED: 'Фильм успешно удален',
 };
 
 module.exports = {

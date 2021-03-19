@@ -1,8 +1,8 @@
 const { isCelebrateError } = require('celebrate');
 
 module.exports = (err, req, res, next) => {
-  let message = '';
-  let statusCode = 500;
+  let message = err.message || '';
+  let statusCode = err.statusCode || 500;
   if (isCelebrateError(err)) {
     statusCode = 400;
     const errorParam = err.details.get('params');
