@@ -1,8 +1,10 @@
 const { isCelebrateError } = require('celebrate');
 
 module.exports = (err, req, res, next) => {
+  let message = '';
+  let statusCode = 500;
   if (isCelebrateError(err)) {
-    let message = '';
+    statusCode = 400;
     const errorParam = err.details.get('params');
     const errorBody = err.details.get('body');
 
@@ -14,8 +16,14 @@ module.exports = (err, req, res, next) => {
       const { details: [errorDetailsParams] } = errorBody;
       message = errorDetailsParams.message;
     }
+  }
 
-    res.status(400).send({ message });
-    next(err);
-  } else { res.status(err.statusCode || 500).send({ message: err.message || 'Ошибка сервера' }); }
+  if (err.name === 'ValidationError') {
+    statusCode = 400;
+    message = err.message;
+  }
+
+  res.status(statusCode || 500).send({ message: message || 'Ошибка сервера' });
+
+  next(err);
 };

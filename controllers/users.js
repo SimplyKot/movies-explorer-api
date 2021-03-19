@@ -6,13 +6,9 @@ const User = require('../models/user');
 const ExistError = require('../errors/exist-err');
 const ConflictError = require('../errors/conflict-err');
 
-module.exports.testUser = (req, res) => {
-  res.send({ message: 'Test completed!' });
-};
-
 module.exports.createUser = (req, res, next) => {
   const {
-    email, name, about, avatar,
+    email, name,
   } = req.body;
   User.findOne({ email })
     .then((data) => {
@@ -20,15 +16,18 @@ module.exports.createUser = (req, res, next) => {
         throw new ExistError('Пользователь с такой почтой существует');
       }
     })
-    .catch((err) => next(err));
-
-  bcrypt.hash(req.body.password, 10).then((hash) => User.create({
-    email, password: hash, name, about, avatar,
-  })
-    .then((user) => res.send({ data: { _id: user._id, email: user.email } }))
-    .catch((err) => {
-      next(err);
-    }));
+    .then(bcrypt.hash(req.body.password, 10)
+      .then((hash) => User.create({
+        email, password: hash, name,
+      })
+        .catch(next)
+        .then((user) => {
+          if (user) {
+            res.send({ data: { _id: user._id, email: user.email } });
+          }
+        })
+        .catch(next)))
+    .catch(next);
 };
 
 module.exports.updateUser = (req, res, next) => {

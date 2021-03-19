@@ -21,8 +21,7 @@ router.post(
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().required().email(),
-      password: Joi.string().required().min(2).max(8)
-        .alphanum(),
+      password: Joi.string().required(),
     }),
   }),
   // Лимитер упрощен и перенесен в app.js по просьбе ревьюера
@@ -35,8 +34,7 @@ router.post(
     body: Joi.object().keys({
       name: Joi.string().required().min(2).max(30),
       email: Joi.string().required().email(),
-      password: Joi.string().required().min(2).max(8)
-        .alphanum(),
+      password: Joi.string().required(),
     }),
   }),
   // Лимитер упрощен и перенесен в app.js по просьбе ревьюера
