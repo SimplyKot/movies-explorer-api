@@ -2,6 +2,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { USER_EXIST } = require('../utils/constants');
 const User = require('../models/user');
 const ExistError = require('../errors/exist-err');
 const ConflictError = require('../errors/conflict-err');
@@ -13,7 +14,7 @@ module.exports.createUser = (req, res, next) => {
   User.findOne({ email })
     .then((data) => {
       if (data) {
-        throw new ExistError('Пользователь с такой почтой существует');
+        throw new ExistError(USER_EXIST);
       }
     })
     .then(bcrypt.hash(req.body.password, 10)
@@ -34,7 +35,7 @@ module.exports.updateUser = (req, res, next) => {
   const { name, email } = req.body;
   User.findOne({ email })
     .then((data) => {
-      if (data) { throw new ConflictError(`Пользователь с почтой ${email} уже существует`); }
+      if (data) { throw new ConflictError(USER_EXIST); }
     })
     .then(() => User.findByIdAndUpdate(
       req.user._id,

@@ -2,6 +2,7 @@ const Movie = require('../models/movie');
 const DenyError = require('../errors/deny-err');
 const NotFoundError = require('../errors/not-found-err');
 const ConflictError = require('../errors/conflict-err');
+const { FILM_ERROR } = require('../utils/constants');
 
 module.exports.getMovies = (req, res, next) => {
   const owner = req.user;
@@ -35,7 +36,7 @@ module.exports.addMovie = (req, res, next) => {
   Movie.findOne({ movieId })
     .then((movie) => {
       if (movie) {
-        throw new ConflictError('Этот фильм уже был добавлен вами в ибранные ранее');
+        throw new ConflictError(FILM_ERROR.FILM_ALREADY_EXIST);
       }
     })
     .then(() => Movie.create(data)
@@ -48,14 +49,14 @@ module.exports.deleteMovie = (req, res, next) => {
   const { movieId } = req.params;
   Movie.findById(movieId)
     .populate('owner')
-    .orFail(new NotFoundError('Фильм не существует'))
+    .orFail(new NotFoundError(FILM_ERROR.FILM_NOT_FOUND))
     .then((data) => {
       if (data.owner._id.toString() === req.user._id) {
         Movie.findByIdAndDelete(movieId)
           .then((movie) => res.send({ message: `Фильм с "id" ${movie._id} удален` }))
           .catch((err) => next(err));
       } else {
-        throw new DenyError('Невозможно удалить чужой фильм');
+        throw new DenyError(FILM_ERROR.NOT_OWNER);
       }
     })
     .catch((err) => next(err));

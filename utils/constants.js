@@ -16,4 +16,14 @@ const LIMITER_ERROR = {
   ACTION_LIMIT_REACHED: 'Первышена частота запросов с этого IP',
 };
 
-module.exports = { AUTH_ERROR, MONGO_VALIDATION, LIMITER_ERROR };
+const USER_EXIST = 'Пользователь с такой почтой существует';
+
+const FILM_ERROR = {
+  FILM_NOT_FOUND: 'Фильм не существует',
+  NOT_OWNER: 'Невозможно удалить чужой фильм',
+  FILM_ALREADY_EXIST: 'Этот фильм уже был добавлен вами в ибранные ранее',
+};
+
+module.exports = {
+  AUTH_ERROR, MONGO_VALIDATION, LIMITER_ERROR, USER_EXIST, FILM_ERROR,
+};
