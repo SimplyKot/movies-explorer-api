@@ -1,6 +1,7 @@
 const Movie = require('../models/movie');
 const DenyError = require('../errors/deny-err');
 const NotFoundError = require('../errors/not-found-err');
+const ConflictError = require('../errors/conflict-err');
 
 module.exports.getMovies = (req, res, next) => {
   const owner = req.user;
@@ -30,8 +31,16 @@ module.exports.addMovie = (req, res, next) => {
     owner: req.user._id,
     movieId,
   };
-  Movie.create(data)
-    .then((movie) => res.send(movie))
+
+  Movie.findOne({ movieId })
+    .then((movie) => {
+      if (movie) {
+        throw new ConflictError('Этот фильм уже был добавлен вами в ибранные ранее');
+      }
+    })
+    .then(() => Movie.create(data)
+      .then((movie) => res.send(movie))
+      .catch((err) => next(err)))
     .catch((err) => next(err));
 };
 
