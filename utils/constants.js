@@ -11,4 +11,9 @@ const MONGO_VALIDATION = {
   WRONG_LINK: 'Значение не является корректной ссылкой',
 };
 
-module.exports = { AUTH_ERROR, MONGO_VALIDATION };
+const LIMITER_ERROR = {
+  AUTH_LIMIT_REACHED: 'Превышено количество попыток авторизации с этого IP',
+  ACTION_LIMIT_REACHED: 'Первышена частота запросов с этого IP',
+};
+
+module.exports = { AUTH_ERROR, MONGO_VALIDATION, LIMITER_ERROR };
