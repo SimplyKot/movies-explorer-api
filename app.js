@@ -19,7 +19,8 @@ const { actionLimiter } = require('./middlewares/rateLimiter');
 // Подключаемся к mongoDB
 const isProductionHost = process.env.NODE_ENV === 'production';
 const { DB_HOST, DB_PORT, DB_NAME } = process.env;
-const mongoConnectString = `mongodb://${isProductionHost ? DB_HOST : 'localhost'}:${isProductionHost ? DB_PORT : 27017}/${isProductionHost ? DB_NAME : 'kotomoviesdb'}`;
+const mongoConnectString = isProductionHost ? `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}` : 'mongodb://localhost:27017/kotomoviesdb';
+
 mongoose.connect(mongoConnectString, {
   useNewUrlParser: true,
   useCreateIndex: true,

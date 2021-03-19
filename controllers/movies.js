@@ -3,7 +3,8 @@ const DenyError = require('../errors/deny-err');
 const NotFoundError = require('../errors/not-found-err');
 
 module.exports.getMovies = (req, res, next) => {
-  Movie.find({})
+  const owner = req.user._id;
+  Movie.find({ owner })
     .then((data) => res.send(data))
     .catch((err) => next(err));
 };
@@ -35,9 +36,10 @@ module.exports.addMovie = (req, res, next) => {
 module.exports.deleteMovie = (req, res, next) => {
   const { movieId } = req.params;
   Movie.findById(movieId)
+    .populate('owner')
     .orFail(new NotFoundError('Фильм не существует'))
     .then((data) => {
-      if (data.owner === req.user._id) {
+      if (data.owner._id.toString() === req.user._id) {
         Movie.findByIdAndDelete(movieId)
           .then((movie) => res.send({ message: `Фильм с "id" ${movie._id} удален` }))
           .catch((err) => next(err));
