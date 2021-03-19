@@ -1,6 +1,5 @@
 const { isCelebrateError } = require('celebrate');
 
-// eslint-disable-next-line no-unused-vars
 module.exports = (err, req, res, next) => {
   if (isCelebrateError(err)) {
     let message = '';
@@ -16,7 +15,8 @@ module.exports = (err, req, res, next) => {
       message = errorDetailsParams.message;
     }
 
-    return res.status(400).send({ message });
+    res.status(400).send({ message });
+    next(err);
   }
 
   return res.status(err.statusCode || 500).send({ message: err.message || 'Ошибка сервера' });

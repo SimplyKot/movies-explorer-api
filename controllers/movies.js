@@ -35,13 +35,12 @@ module.exports.deleteMovie = (req, res, next) => {
   Movie.findById(movieId)
     .orFail(new NotFoundError('Фильм не существует'))
     .then((data) => {
-      // eslint-disable-next-line eqeqeq
-      if (data.owner != req.user._id) {
-        throw new DenyError('Невозможно удалить чужой фильм');
-      } else {
+      if (data.owner === req.user._id) {
         Movie.findByIdAndDelete(movieId)
           .then((movie) => res.send({ message: `Фильм с "id" ${movie._id} удален` }))
           .catch((err) => next(err));
+      } else {
+        throw new DenyError('Невозможно удалить чужой фильм');
       }
     })
     .catch((err) => next(err));

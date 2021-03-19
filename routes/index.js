@@ -1,10 +1,13 @@
 const router = require('express').Router();
 
-// Импортирует celebrate
 const { celebrate, Joi } = require('celebrate');
+const NotFoundError = require('../errors/not-found-err');
+
+// Импортирует celebrate
 
 // Импортируем лимитер для авторизации и действий пользователей
-const { authLimiter, actionLimiter } = require('../middlewares/rateLimiter');
+// const { authLimiter, actionLimiter } = require('../middlewares/rateLimiter');
+// Лимитер упрощен и перенесен в app.js по просьбе ревьюера
 
 const { login, createUser } = require('../controllers/users');
 const users = require('./users');
@@ -22,7 +25,8 @@ router.post(
         .alphanum(),
     }),
   }),
-  authLimiter,
+  // Лимитер упрощен и перенесен в app.js по просьбе ревьюера
+  // authLimiter,
   login,
 );
 router.post(
@@ -34,7 +38,8 @@ router.post(
         .alphanum(),
     }),
   }),
-  authLimiter,
+  // Лимитер упрощен и перенесен в app.js по просьбе ревьюера
+  // authLimiter,
   createUser,
 );
 
@@ -42,13 +47,14 @@ router.post(
 router.use(auth);
 
 // Огрганичиваем частоту действий авторизированных пользователе
-router.use(actionLimiter);
+// router.use(actionLimiter);
+// Лимитер упрощен и перенесен в app.js по просьбе ревьюера
 
 router.use('/users', users);
 router.use('/movies', movies);
 
-router.use('*', (req, res) => {
-  res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
+router.use('*', () => {
+  throw new NotFoundError('Запрашиваемый ресурс не найден');
 });
 
 module.exports = router;

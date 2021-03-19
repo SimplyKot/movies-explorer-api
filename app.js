@@ -7,11 +7,14 @@ const express = require('express');
 // Подключаем модуль связи с БД
 const mongoose = require('mongoose');
 
+// Импортируем лимитер для авторизации и действий пользователей
+
 // Подклбчаем защиту CORS
 const cors = require('cors');
 
 // Подключаем защиту заголовков hemlet
 const helmet = require('helmet');
+const { actionLimiter } = require('./middlewares/rateLimiter');
 
 // Подключаемся к mongoDB
 const isProductionHost = process.env.NODE_ENV === 'production';
@@ -40,6 +43,8 @@ app.use(helmet());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(actionLimiter);
 
 // Логируем запросы
 app.use(requestLogger);

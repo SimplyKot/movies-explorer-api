@@ -1,4 +1,3 @@
-/* eslint-disable no-throw-literal */
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const jwt = require('jsonwebtoken');
