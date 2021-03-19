@@ -3,9 +3,11 @@ const DenyError = require('../errors/deny-err');
 const NotFoundError = require('../errors/not-found-err');
 
 module.exports.getMovies = (req, res, next) => {
-  const owner = req.user._id;
+  const owner = req.user;
   Movie.find({ owner })
-    .then((data) => res.send(data))
+    .then((data) => {
+      res.send(data);
+    })
     .catch((err) => next(err));
 };
 

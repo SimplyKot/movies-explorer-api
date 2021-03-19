@@ -7,19 +7,21 @@ const express = require('express');
 // Подключаем модуль связи с БД
 const mongoose = require('mongoose');
 
-// Импортируем лимитер для авторизации и действий пользователей
-
 // Подклбчаем защиту CORS
 const cors = require('cors');
 
 // Подключаем защиту заголовков hemlet
 const helmet = require('helmet');
+
+// Получаем конфигурацию для mongoDB
+const { DB_HOST, DB_PORT, DB_NAME } = require('./config/mongodb');
+
+// Импортируем лимитер для авторизации и действий пользователей
 const { actionLimiter } = require('./middlewares/rateLimiter');
 
 // Подключаемся к mongoDB
 const isProductionHost = process.env.NODE_ENV === 'production';
-const { DB_HOST, DB_PORT, DB_NAME } = process.env;
-const mongoConnectString = isProductionHost ? `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}` : 'mongodb://localhost:27017/kotomoviesdb';
+const mongoConnectString = isProductionHost ? `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}` : 'mongodb://localhost:27017/test';
 
 mongoose.connect(mongoConnectString, {
   useNewUrlParser: true,
