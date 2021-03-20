@@ -1,4 +1,5 @@
 const { isCelebrateError } = require('celebrate');
+const { DEFAULT_SERVER_ERROR } = require('../utils/constants');
 
 module.exports = (err, req, res, next) => {
   let message = err.message || '';
@@ -23,7 +24,7 @@ module.exports = (err, req, res, next) => {
     message = err.message;
   }
 
-  res.status(statusCode || 500).send({ message: message || 'Ошибка сервера' });
+  res.status(statusCode || 500).send({ message: message || DEFAULT_SERVER_ERROR });
 
   next(err);
 };

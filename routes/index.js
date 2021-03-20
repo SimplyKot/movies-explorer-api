@@ -1,6 +1,8 @@
 const router = require('express').Router();
 
 const { celebrate, Joi } = require('celebrate');
+const { RESOURCE_NOT_FOUND_ERROR } = require('../utils/constants');
+
 const NotFoundError = require('../errors/not-found-err');
 
 // Импортирует celebrate
@@ -53,7 +55,7 @@ router.use('/users', users);
 router.use('/movies', movies);
 
 router.use('*', () => {
-  throw new NotFoundError('Запрашиваемый ресурс не найден');
+  throw new NotFoundError(RESOURCE_NOT_FOUND_ERROR);
 });
 
 module.exports = router;
