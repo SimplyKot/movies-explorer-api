@@ -25,6 +25,15 @@ const FILM_ERROR = {
   FILM_DELETED: 'Фильм успешно удален',
 };
 
+const DEFAULT_SERVER_ERROR = 'Ошибка сервера';
+const RESOURCE_NOT_FOUND_ERROR = 'Запрашиваемый ресурс не найден';
+
 module.exports = {
-  AUTH_ERROR, MONGO_VALIDATION, LIMITER_ERROR, USER_EXIST, FILM_ERROR,
+  AUTH_ERROR,
+  MONGO_VALIDATION,
+  LIMITER_ERROR,
+  USER_EXIST,
+  FILM_ERROR,
+  DEFAULT_SERVER_ERROR,
+  RESOURCE_NOT_FOUND_ERROR,
 };
