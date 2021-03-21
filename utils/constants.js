@@ -27,8 +27,7 @@ const FILM_ERROR = {
 
 const DEFAULT_SERVER_ERROR = 'Ошибка сервера';
 const RESOURCE_NOT_FOUND_ERROR = 'Запрашиваемый ресурс не найден';
-
-module.exports = {
+const REGEX_LINK = module.exports = {
   AUTH_ERROR,
   MONGO_VALIDATION,
   LIMITER_ERROR,
