@@ -1,5 +1,6 @@
 const movies = require('express').Router();
 const { celebrate, Joi, Segments } = require('celebrate');
+const { REGEX_LINK, WRONG_LINK } = require('../utils/constants');
 
 const {
   getMovies,
@@ -19,11 +20,11 @@ movies.post('/',
       duration: Joi.number().required().min(0),
       year: Joi.number().required().min(1888),
       description: Joi.string().required(),
-      image: Joi.string().required().pattern(new RegExp(/^((http|https):\/\/)?(www\.)?[a-zA-Z0-9-]{1,}\.?([a-z0-9]{1,})?\.([a-z0-9]{1,})?\.?\w{1,}?(\/([\w#!:.?+=&%@!\-/])*)?/)).message('Поле link не является допустимой ссылкой'),
-      trailer: Joi.string().required().pattern(new RegExp(/^((http|https):\/\/)?(www\.)?[a-zA-Z0-9-]{1,}\.?([a-z0-9]{1,})?\.([a-z0-9]{1,})?\.?\w{1,}?(\/([\w#!:.?+=&%@!\-/])*)?/)).message('Поле link не является допустимой ссылкой'),
+      image: Joi.string().required().pattern(new RegExp(REGEX_LINK)).message(WRONG_LINK),
+      trailer: Joi.string().required().pattern(new RegExp(REGEX_LINK)).message(WRONG_LINK),
       nameRU: Joi.string().required(),
       nameEN: Joi.string().required(),
-      thumbnail: Joi.string().required().pattern(new RegExp(/^((http|https):\/\/)?(www\.)?[a-zA-Z0-9-]{1,}\.?([a-z0-9]{1,})?\.([a-z0-9]{1,})?\.?\w{1,}?(\/([\w#!:.?+=&%@!\-/])*)?/)).message('Поле link не является допустимой ссылкой'),
+      thumbnail: Joi.string().required().pattern(new RegExp(REGEX_LINK)).message(WRONG_LINK),
       movieId: Joi.number().required().min(0),
     }),
   }),

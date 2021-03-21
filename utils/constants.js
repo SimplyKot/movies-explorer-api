@@ -27,7 +27,8 @@ const FILM_ERROR = {
 
 const DEFAULT_SERVER_ERROR = 'Ошибка сервера';
 const RESOURCE_NOT_FOUND_ERROR = 'Запрашиваемый ресурс не найден';
-const REGEX_LINK = module.exports = {
+const REGEX_LINK = /^((http|https):\/\/)?(www\.)?[a-zA-Z0-9-]{1,}\.?([a-z0-9]{1,})?\.([a-z0-9]{1,})?\.?\w{1,}?(\/([\w#!:.?+=&%@!\-/])*)?/;
+module.exports = {
   AUTH_ERROR,
   MONGO_VALIDATION,
   LIMITER_ERROR,
@@ -35,4 +36,5 @@ const REGEX_LINK = module.exports = {
   FILM_ERROR,
   DEFAULT_SERVER_ERROR,
   RESOURCE_NOT_FOUND_ERROR,
+  REGEX_LINK,
 };
