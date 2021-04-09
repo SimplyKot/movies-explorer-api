@@ -48,10 +48,10 @@ const errorHandler = require('./middlewares/errorHandler');
 const { PORT = 3000 } = process.env;
 const app = express();
 
+app.use(helmet());
+
 // Включаем CORS
 app.use(cors(corsOptions));
-
-app.use(helmet());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
