@@ -30,6 +30,11 @@ mongoose.connect(mongoConnectString, {
   useUnifiedTopology: true,
 });
 
+const corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
 // Подклюяаем логирование
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
@@ -53,7 +58,7 @@ app.use(actionLimiter);
 app.use(requestLogger);
 
 // Включаем CORS
-app.use(cors());
+app.use(cors(corsOptions));
 
 // Подключаем все маршруты
 app.use(routes);
