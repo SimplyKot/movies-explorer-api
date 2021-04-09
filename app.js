@@ -30,8 +30,9 @@ mongoose.connect(mongoConnectString, {
   useUnifiedTopology: true,
 });
 
+// TODO: Включть CORS обратно после отладки
 const corsOptions = {
-  origin: ['http://loсalhost:3000'],
+  origin: ['*'],
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
