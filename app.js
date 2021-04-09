@@ -31,7 +31,7 @@ mongoose.connect(mongoConnectString, {
 });
 
 const corsOptions = {
-  origin: '*',
+  origin: ['*', 'http://loсalhost:3000'],
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
