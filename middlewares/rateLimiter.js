@@ -13,7 +13,7 @@ module.exports.authLimiter = rateLimit({
 
 // Настраиваем защиту создания пользователя и аутентификации
 module.exports.actionLimiter = rateLimit({
-  windowMs: 1000, // За 1 секунду
-  max: 1, // 1 действие
+  windowMs: 4000, // За 4 секунды
+  max: 4, // 4 действия (из за preflight для cors  и  двойного запроса при авторизаии)
   message: { message: LIMITER_ERROR.ACTION_LIMIT_REACHED },
 });
