@@ -31,7 +31,7 @@ mongoose.connect(mongoConnectString, {
 });
 
 const corsOptions = {
-  origin: ['*', 'http://loсalhost:3000'],
+  origin: ['http://loсalhost:3000'],
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
@@ -47,6 +47,9 @@ const errorHandler = require('./middlewares/errorHandler');
 const { PORT = 3000 } = process.env;
 const app = express();
 
+// Включаем CORS
+app.use(cors(corsOptions));
+
 app.use(helmet());
 
 app.use(express.json());
@@ -56,9 +59,6 @@ app.use(actionLimiter);
 
 // Логируем запросы
 app.use(requestLogger);
-
-// Включаем CORS
-app.use(cors(corsOptions));
 
 // Подключаем все маршруты
 app.use(routes);
