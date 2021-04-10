@@ -38,7 +38,7 @@ movies.delete(
   '/:movieId',
   celebrate({
     [Segments.PARAMS]: {
-      movieId: Joi.string().required().length(24).hex(),
+      movieId: Joi.string().required().min(0),
     },
   }),
   deleteMovie,
