@@ -35,7 +35,8 @@ module.exports.updateUser = (req, res, next) => {
   const { name, email } = req.body;
   User.findOne({ email })
     .then((data) => {
-      if (data) { throw new ConflictError(USER_EXIST); }
+      console.log(data, email);
+      if (data.email !== email) { throw new ConflictError(USER_EXIST); }
     })
     .then(() => User.findByIdAndUpdate(
       req.user._id,
@@ -43,7 +44,7 @@ module.exports.updateUser = (req, res, next) => {
       {
         new: true,
         runValidators: true,
-      },
+      },:
     ))
     .then((user) => res.send(user))
     .catch((err) => next(err));
