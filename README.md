@@ -1,4 +1,5 @@
-### movies-explorer-api
+# movies-explorer-api
+
 Бэкенд для проекта movies-explorer
 
 Для уствновки склонируйте этот репозиторий и поставьте небходимые зависимости командой npm install
